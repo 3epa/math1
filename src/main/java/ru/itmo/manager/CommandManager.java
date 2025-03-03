@@ -17,6 +17,12 @@ public class CommandManager {
     }
 
     public void execute(String commandName) throws CommandNotExists {
-
+        for (Command command: commands) {
+            if (command.getName().equals(commandName)) {
+                command.execute();
+                return;
+            }
+        }
+        throw new CommandNotExists("Не существует команды с таким именем");
     }
 }
