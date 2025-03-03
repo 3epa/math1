@@ -1,7 +1,7 @@
 package ru.itmo.manager;
 
 import ru.itmo.command.Command;
-import ru.itmo.exception.CommandNotExists;
+import ru.itmo.exception.CommandNotExistsException;
 
 import java.util.ArrayList;
 
@@ -16,13 +16,13 @@ public class CommandManager {
         commands.add(command);
     }
 
-    public void execute(String commandName) throws CommandNotExists {
+    public void execute(String commandName) throws CommandNotExistsException {
         for (Command command: commands) {
             if (command.getName().equals(commandName)) {
                 command.execute();
                 return;
             }
         }
-        throw new CommandNotExists("Не существует команды с таким именем");
+        throw new CommandNotExistsException("Не существует команды с таким именем");
     }
 }
