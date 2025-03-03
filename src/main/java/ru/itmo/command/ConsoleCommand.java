@@ -39,9 +39,8 @@ public class ConsoleCommand implements Command {
     private Matrix readFromConsole() throws IOException, IncorrectInputException, NumberFormatException, ArrayIndexOutOfBoundsException {
         System.out.println("Введите размерность матрицы:");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String line = reader.readLine().strip();
 
-        int size = Integer.parseInt(line);
+        int size = Integer.parseInt(reader.readLine().strip());
         if (size > 20 || size < 1) {
             throw new IncorrectInputException("Variable size not in required range(1 <= size <= 20)");
         }
