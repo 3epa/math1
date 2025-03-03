@@ -1,16 +1,13 @@
 package ru.itmo.algo;
 
 import ru.itmo.model.Matrix;
+import ru.itmo.util.PrettyMatrixOutput;
 
 public class GaussMethod {
     public static void compute(Matrix matrix) {
         double[][] data = matrixTriangulation(matrix);
-        for (int i = 0; i < matrix.getSize(); i++) {
-            for (int j = 0; j < matrix.getSize() + 1; j++) {
-                System.out.print(data[i][j] + " ");
-            }
-            System.out.println();
-        }
+        System.out.println("Матрица, приведенная к треугольному виду:");
+        PrettyMatrixOutput.printMatrix(matrix);
         double[] solution = findSolution(new Matrix(matrix.getSize(), data));
         for (int i = 0; i < matrix.getSize(); i++) {
             System.out.println("x_" + (i + 1) + "=" + solution[i]);

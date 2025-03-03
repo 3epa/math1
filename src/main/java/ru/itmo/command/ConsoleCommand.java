@@ -3,6 +3,7 @@ package ru.itmo.command;
 import ru.itmo.algo.GaussMethod;
 import ru.itmo.exception.IncorrectInputException;
 import ru.itmo.model.Matrix;
+import ru.itmo.util.PrettyMatrixOutput;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,7 +34,8 @@ public class ConsoleCommand implements Command {
             System.out.println("Некорректное количество введенных данных");
             return;
         }
-        printMatrix(matrix);
+        System.out.println("Введённая матрица: ");
+        PrettyMatrixOutput.printMatrix(matrix);
         GaussMethod.compute(matrix);
     }
 
@@ -61,16 +63,5 @@ public class ConsoleCommand implements Command {
         }
         reader.close();
         return new Matrix(size, matrix);
-    }
-    private void printMatrix(Matrix matrix) {
-        System.out.println("Введённая матрица: ");
-        int size = matrix.getSize();
-        double[][] data = matrix.getData();
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size + 1; j++) {
-                System.out.print(data[i][j] + " ");
-            }
-            System.out.println();
-        }
     }
 }
