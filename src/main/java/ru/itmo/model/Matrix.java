@@ -2,11 +2,11 @@ package ru.itmo.model;
 
 public class Matrix {
     private final int size;
-    private final double[][] matrix;
+    private final double[][] data;
 
-    public Matrix(int size, double[][] matrix) {
+    public Matrix(int size, double[][] data) {
         this.size = size;
-        this.matrix = matrix;
+        this.data = data;
     }
 
     public int getSize() {
@@ -14,12 +14,12 @@ public class Matrix {
     }
 
     public double[][] getMatrix() {
-        return matrix;
+        return data;
     }
 
     public void swapRows(int firstRow, int secondRow) {
-        double[] temp = this.matrix[firstRow];
-        this.matrix[firstRow] = this.matrix[secondRow];
-        this.matrix[secondRow] = temp;
+        double[] temp = this.data[firstRow];
+        this.data[firstRow] = this.data[secondRow];
+        this.data[secondRow] = temp;
     }
 }
