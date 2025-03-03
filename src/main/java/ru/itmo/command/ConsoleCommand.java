@@ -28,6 +28,9 @@ public class ConsoleCommand implements Command {
         } catch (NumberFormatException e) {
             System.out.println("Одно из введенных значений не является числом");
             return;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Некорректное количество введенных данных");
+            return;
         }
         for (int i = 0; i < matrix.getSize(); i++) {
             for (int j = 0; j < matrix.getSize(); j++) {
@@ -37,7 +40,7 @@ public class ConsoleCommand implements Command {
         }
     }
 
-    private Matrix readFromConsole() throws IOException, IncorrectInputException, NumberFormatException {
+    private Matrix readFromConsole() throws IOException, IncorrectInputException, NumberFormatException, ArrayIndexOutOfBoundsException {
         System.out.println("Введите размерность матрицы:");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String line = reader.readLine().strip();
@@ -60,6 +63,7 @@ public class ConsoleCommand implements Command {
                 matrix[i][j] = Double.parseDouble(stringMatrix[i][j].strip());
             }
         }
+        reader.close();
         return new Matrix(size, matrix);
     }
 }
