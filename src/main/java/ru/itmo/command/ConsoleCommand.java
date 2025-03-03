@@ -17,7 +17,7 @@ public class ConsoleCommand implements Command {
 
     @Override
     public void execute() {
-        Matrix matrix = null;
+        Matrix matrix;
         try {
             matrix = readFromConsole();
         } catch (IOException e) {

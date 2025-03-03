@@ -6,7 +6,6 @@ import ru.itmo.model.Matrix;
 import ru.itmo.util.PrettyMatrixOutput;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -18,7 +17,7 @@ public class RandomCommand implements Command {
 
     @Override
     public void execute() {
-        Matrix matrix = null;
+        Matrix matrix;
         System.out.println("Генерация рандомной матрицы...");
         try {
             matrix = generateRandomMatrix();

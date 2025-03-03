@@ -15,9 +15,8 @@ public class FileCommand implements Command {
 
     @Override
     public void execute() {
-        Matrix matrix = null;
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        ) {
+        Matrix matrix;
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
             System.out.println("Введите имя файла: ");
             String fileName = reader.readLine().strip();
 
