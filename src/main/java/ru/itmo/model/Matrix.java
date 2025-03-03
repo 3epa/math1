@@ -13,7 +13,7 @@ public class Matrix {
         return size;
     }
 
-    public double[][] getMatrix() {
+    public double[][] getData() {
         return data;
     }
 
