@@ -55,6 +55,7 @@ public class RandomCommand implements Command {
     }
 
     private void printMatrix(Matrix matrix) {
+        System.out.println("Введённая матрица: ");
         int size = matrix.getSize();
         double[][] data = matrix.getData();
         for (int i = 0; i < size; i++) {
