@@ -23,6 +23,6 @@ public class CommandManager {
                 return;
             }
         }
-        throw new CommandNotExistsException("Не существует команды с таким именем");
+        throw new CommandNotExistsException("Command with this name doesn't exist");
     }
 }
