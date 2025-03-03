@@ -16,4 +16,10 @@ public class Matrix {
     public double[][] getMatrix() {
         return matrix;
     }
+
+    public void swapRows(int firstRow, int secondRow) {
+        double[] temp = this.matrix[firstRow];
+        this.matrix[firstRow] = this.matrix[secondRow];
+        this.matrix[secondRow] = temp;
+    }
 }
