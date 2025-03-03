@@ -1,5 +1,6 @@
 package ru.itmo.command;
 
+import ru.itmo.algo.GaussMethod;
 import ru.itmo.exception.IncorrectInputException;
 import ru.itmo.model.Matrix;
 
@@ -32,12 +33,7 @@ public class ConsoleCommand implements Command {
             System.out.println("Некорректное количество введенных данных");
             return;
         }
-        for (int i = 0; i < matrix.getSize(); i++) {
-            for (int j = 0; j < matrix.getSize(); j++) {
-                System.out.print(matrix.getData()[i][j] + " ");
-            }
-            System.out.println();
-        }
+        GaussMethod.compute(matrix);
     }
 
     private Matrix readFromConsole() throws IOException, IncorrectInputException, NumberFormatException, ArrayIndexOutOfBoundsException {
@@ -50,16 +46,16 @@ public class ConsoleCommand implements Command {
             throw new IncorrectInputException("Variable size not in required range(1 <= size <= 20)");
         }
         System.out.println("Введите строки матрицы:");
-        String[][] stringMatrix = new String[size][size];
+        String[][] stringMatrix = new String[size][size+1];
         for (int i = 0; i < size; i++) {
             String matrixLine = reader.readLine().strip();
             matrixLine = matrixLine.replaceAll(",", ".");
             stringMatrix[i] = matrixLine.split(" ");
         }
 
-        double[][] matrix = new double[size][size];
+        double[][] matrix = new double[size][size+1];
         for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
+            for (int j = 0; j < size+1; j++) {
                 matrix[i][j] = Double.parseDouble(stringMatrix[i][j].strip());
             }
         }
