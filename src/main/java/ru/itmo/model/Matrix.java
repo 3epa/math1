@@ -3,10 +3,19 @@ package ru.itmo.model;
 public class Matrix {
     private final int size;
     private final double[][] data;
+    private int detSign = 1;
 
     public Matrix(int size, double[][] data) {
         this.size = size;
         this.data = data;
+    }
+
+    public int getDetSign() {
+        return detSign;
+    }
+
+    public void changeDetSign() {
+        this.detSign = -detSign;
     }
 
     public int getSize() {

@@ -8,6 +8,8 @@ public class GaussMethod {
         double[][] data = matrixTriangulation(matrix);
         System.out.println("Матрица, приведенная к треугольному виду:");
         PrettyMatrixOutput.printMatrix(matrix);
+        System.out.println("Определитель матрицы:");
+        System.out.println(findDeterminant(matrix));
         double[] solution = findSolution(new Matrix(matrix.getSize(), data));
         for (int i = 0; i < matrix.getSize(); i++) {
             System.out.println("x_" + (i + 1) + "=" + solution[i]);
@@ -16,14 +18,13 @@ public class GaussMethod {
 
     private static double[][] matrixTriangulation(Matrix matrix) {
         double[][] data = matrix.getData();
-        int detSign = 1;
         int size = matrix.getSize();
         for (int i = 0; i < size - 1; i++) {
             if (data[i][i] == 0) {
                 for (int k = i + 1; k < size; k++) {
                     if (data[k][i] != 0) {
                         matrix.swapRows(i, k);
-                        detSign = detSign * (-1);
+                        matrix.changeDetSign();
                         break;
                     }
                 }
@@ -45,11 +46,19 @@ public class GaussMethod {
         for (int i = size - 1; i >= 0; i--) {
             double s = 0;
             for (int j = size - 1; j > i; j--) {
-                s = s + data[i][j]*solution[j];
+                s = s + data[i][j] * solution[j];
             }
             double x = (data[i][size] - s) / data[i][i];
             solution[i] = x;
         }
         return solution;
+    }
+
+    private static double findDeterminant(Matrix matrix) {
+        double determinant = 1;
+        for (int i = 0; i < matrix.getSize(); i++) {
+            determinant = determinant * matrix.getData()[i][i];
+        }
+        return determinant * matrix.getDetSign();
     }
 }
