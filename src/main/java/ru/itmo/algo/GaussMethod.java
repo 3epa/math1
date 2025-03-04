@@ -8,6 +8,12 @@ public class GaussMethod {
         double[][] data = matrixTriangulation(matrix);
         System.out.println("Матрица, приведенная к треугольному виду:");
         PrettyMatrixOutput.printMatrix(matrix);
+        Matrix matrix1 = new Matrix(matrix.getSize()-1, matrix.getData());
+        AmountOfSolution amountOfSolution = findAmountOfSolution(matrix, matrix1);
+        if (amountOfSolution != AmountOfSolution.ONE) {
+            System.out.println("Система имеет не ровно одно решение, а " + amountOfSolution);
+            return;
+        }
         System.out.println("Определитель матрицы:");
         System.out.println(findDeterminant(matrix));
         double[] solution = findSolution(new Matrix(matrix.getSize(), data));
@@ -60,5 +66,37 @@ public class GaussMethod {
             determinant = determinant * matrix.getData()[i][i];
         }
         return determinant * matrix.getDetSign();
+    }
+
+    private static int findRang(Matrix matrix) {
+        int counter = 0;
+        for (int i = 0; i < matrix.getSize(); i++) {
+            boolean flag = true;
+            for (int j = 0; j < matrix.getSize(); j++) {
+                if (matrix.getData()[i][j] != 0) {
+                    flag = false;
+                }
+            }
+            if (flag) {
+                counter++;
+            }
+        }
+        return matrix.getSize() - counter;
+    }
+
+    private static AmountOfSolution findAmountOfSolution(Matrix matrix1, Matrix matrix2) {
+        if (matrix1.getSize() != matrix2.getSize()) {
+            return null;
+        }
+
+        if (findRang(matrix1) != findRang(matrix2)) {
+            return AmountOfSolution.ZERO;
+        }
+
+        if (findRang(matrix1) == findRang(matrix2) && findRang(matrix1) < matrix1.getSize()) {
+            return AmountOfSolution.INFINITY;
+        }
+
+        return AmountOfSolution.ONE;
     }
 }
