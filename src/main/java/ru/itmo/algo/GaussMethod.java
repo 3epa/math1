@@ -31,7 +31,7 @@ public class GaussMethod {
         }
     }
 
-    private static double[][] matrixTriangulation(Matrix matrix) {
+    private static void matrixTriangulation(Matrix matrix) {
         double[][] data = matrix.getData();
         int size = matrix.getSize();
         for (int i = 0; i < size - 1; i++) {
@@ -51,7 +51,6 @@ public class GaussMethod {
                 }
             }
         }
-        return data;
     }
 
     private static double[] findSolution(Matrix matrix) {
