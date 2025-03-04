@@ -5,7 +5,8 @@ import ru.itmo.util.PrettyMatrixOutput;
 
 public class GaussMethod {
     public static void compute(Matrix matrix) {
-        double[][] data = matrixTriangulation(matrix);
+        Matrix originalMatrix = new Matrix(matrix.getSize(), matrix.getData());
+        matrixTriangulation(matrix);
         System.out.println("Матрица, приведенная к треугольному виду:");
         PrettyMatrixOutput.printMatrix(matrix);
         Matrix matrix1 = new Matrix(matrix.getSize(), matrix.getData());
@@ -16,9 +17,17 @@ public class GaussMethod {
         }
         System.out.println("Определитель матрицы:");
         System.out.println(findDeterminant(matrix));
-        double[] solution = findSolution(new Matrix(matrix.getSize(), data));
-        for (int i = 0; i < matrix.getSize(); i++) {
+        double[] solution = findSolution(matrix);
+        for (int i = 0; i < matrix.getSize(); i++)  {
             System.out.println("x_" + (i + 1) + "=" + solution[i]);
+        }
+        System.out.println("Вектор невязки:");
+        double[] residuals = findResiduals(originalMatrix, solution);
+        for (int i = 0; i < matrix.getSize(); i++) {
+            System.out.println("r_" + (i + 1) + "=" + residuals[i]);
+        }
+        if (!isSolutionCorrect(residuals)) {
+            System.out.println("Не удалось достигнуть требуемой точности вычислений");
         }
     }
 
@@ -104,5 +113,25 @@ public class GaussMethod {
         }
 
         return AmountOfSolution.ONE;
+    }
+    private static double[] findResiduals(Matrix matrix, double[] x) {
+        double[] residuals = new double[matrix.getSize()];
+        for (int i = 0; i < matrix.getSize(); i++) {
+            double s = 0;
+            for (int j = 0; j < matrix.getSize(); j++) {
+                s = s + matrix.getData()[i][j] * x[j];
+            }
+            residuals[i] = s-matrix.getData()[i][matrix.getSize()];
+        }
+        return residuals;
+    }
+
+    private static boolean isSolutionCorrect(double[] r) {
+        double s = 0;
+        double eps = 0.0001;
+        for (double v : r) {
+            s = s + v * v;
+        }
+        return Math.sqrt(s) < eps;
     }
 }
