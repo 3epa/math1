@@ -1,18 +1,18 @@
 package ru.itmo.algo;
 
+import ru.itmo.exception.NoSolutionExistsException;
 import ru.itmo.model.Matrix;
 import ru.itmo.util.PrettyMatrixOutput;
 
 public class GaussMethod {
-    public static void compute(Matrix matrix) {
+    public static void compute(Matrix matrix) throws NoSolutionExistsException {
         Matrix originalMatrix = new Matrix(matrix.getSize(), matrix.getData());
         matrixTriangulation(matrix);
         System.out.println("Матрица, приведенная к треугольному виду:");
         PrettyMatrixOutput.printMatrix(matrix);
         AmountOfSolution amountOfSolution = findAmountOfSolution(matrix);
         if (amountOfSolution != AmountOfSolution.ONE) {
-            System.out.println("Система имеет не ровно одно решение, а " + amountOfSolution);
-            return;
+            throw new NoSolutionExistsException("Система имеет не ровно одно решение, а " + amountOfSolution);
         }
         System.out.println("Определитель матрицы:");
         System.out.println(findDeterminant(matrix));

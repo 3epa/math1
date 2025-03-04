@@ -3,6 +3,7 @@ package ru.itmo.command;
 import ru.itmo.algo.GaussMethod;
 import ru.itmo.algo.MathLibrary;
 import ru.itmo.exception.IncorrectInputException;
+import ru.itmo.exception.NoSolutionExistsException;
 import ru.itmo.model.Matrix;
 import ru.itmo.util.PrettyMatrixOutput;
 
@@ -39,7 +40,12 @@ public class ConsoleCommand implements Command {
         System.out.println("Изначальная матрица: ");
         PrettyMatrixOutput.printMatrix(matrix);
         System.out.println("Мой метод Гаусса:");
-        GaussMethod.compute(matrix);
+        try {
+            GaussMethod.compute(matrix);
+        } catch (NoSolutionExistsException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
         MathLibrary mathLibrary = new MathLibrary(matrix);
         System.out.println("Определитель через библиотеку:");
         System.out.println(mathLibrary.getDeterminant());
