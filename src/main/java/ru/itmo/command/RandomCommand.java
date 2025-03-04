@@ -39,12 +39,13 @@ public class RandomCommand implements Command {
     private Matrix generateRandomMatrix() throws IncorrectInputException, IOException {
         System.out.println("Введите размерность матрицы:");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Генерация рандомной матрицы...");
+
 
         int size = Integer.parseInt(reader.readLine().strip());
         if (size > 20 || size < 1) {
             throw new IncorrectInputException("Variable size not in required range(1 <= size <= 20)");
         }
+        System.out.println("Генерация рандомной матрицы...");
         double[][] matrix = new double[size][size + 1];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size + 1; j++) {
