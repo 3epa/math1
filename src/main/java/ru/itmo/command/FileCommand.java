@@ -39,7 +39,7 @@ public class FileCommand implements Command {
             System.out.println("Некорректное количество введенных данных");
             return;
         }
-        System.out.println("Введённая матрица: ");
+        System.out.println("Изначальная матрица: ");
         PrettyMatrixOutput.printMatrix(matrix);
         GaussMethod.compute(matrix);
     }

@@ -18,7 +18,6 @@ public class RandomCommand implements Command {
     @Override
     public void execute() {
         Matrix matrix;
-        System.out.println("Генерация рандомной матрицы...");
         try {
             matrix = generateRandomMatrix();
         } catch (IOException e) {
@@ -32,7 +31,7 @@ public class RandomCommand implements Command {
             System.out.println("Одно из введенных значений не является числом");
             return;
         }
-        System.out.println("Введённая матрица: ");
+        System.out.println("Изначальная матрица: ");
         PrettyMatrixOutput.printMatrix(matrix);
         GaussMethod.compute(matrix);
     }
@@ -40,6 +39,7 @@ public class RandomCommand implements Command {
     private Matrix generateRandomMatrix() throws IncorrectInputException, IOException {
         System.out.println("Введите размерность матрицы:");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Генерация рандомной матрицы...");
 
         int size = Integer.parseInt(reader.readLine().strip());
         if (size > 20 || size < 1) {
