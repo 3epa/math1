@@ -4,7 +4,7 @@ public enum AmountOfSolution {
     ZERO("ноль"),
     ONE("одно"),
     INFINITY("бесконечное");
-    private String name;
+    private final String name;
 
     AmountOfSolution(String name) {
         this.name = name;
