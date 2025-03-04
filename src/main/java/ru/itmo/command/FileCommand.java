@@ -1,7 +1,6 @@
 package ru.itmo.command;
 
 import ru.itmo.algo.GaussMethod;
-import ru.itmo.algo.MathLibrary;
 import ru.itmo.exception.IncorrectInputException;
 import ru.itmo.model.Matrix;
 import ru.itmo.util.PrettyMatrixOutput;
