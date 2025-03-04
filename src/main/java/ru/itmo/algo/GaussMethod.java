@@ -9,8 +9,7 @@ public class GaussMethod {
         matrixTriangulation(matrix);
         System.out.println("Матрица, приведенная к треугольному виду:");
         PrettyMatrixOutput.printMatrix(matrix);
-        Matrix matrix1 = new Matrix(matrix.getSize(), matrix.getData());
-        AmountOfSolution amountOfSolution = findAmountOfSolution(matrix, matrix1);
+        AmountOfSolution amountOfSolution = findAmountOfSolution(matrix);
         if (amountOfSolution != AmountOfSolution.ONE) {
             System.out.println("Система имеет не ровно одно решение, а " + amountOfSolution);
             return;
@@ -100,14 +99,14 @@ public class GaussMethod {
         return matrix.getSize() - counter;
     }
 
-    private static AmountOfSolution findAmountOfSolution(Matrix matrix1, Matrix matrix2) {
-        int rang1 = findRang(matrix1, true);
-        int rang2 = findRang(matrix2, false);
+    private static AmountOfSolution findAmountOfSolution(Matrix matrix) {
+        int rang1 = findRang(matrix, true);
+        int rang2 = findRang(matrix, false);
         if (rang1 != rang2) {
             return AmountOfSolution.ZERO;
         }
 
-        if (rang1 < matrix1.getSize()) {
+        if (rang1 < matrix.getSize()) {
             return AmountOfSolution.INFINITY;
         }
 
