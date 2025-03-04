@@ -1,6 +1,7 @@
 package ru.itmo.command;
 
 import ru.itmo.algo.GaussMethod;
+import ru.itmo.algo.MathLibrary;
 import ru.itmo.exception.IncorrectInputException;
 import ru.itmo.model.Matrix;
 import ru.itmo.util.PrettyMatrixOutput;
@@ -9,6 +10,7 @@ import org.apache.commons.math3.linear.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 public class RandomCommand implements Command {
     @Override
@@ -35,31 +37,16 @@ public class RandomCommand implements Command {
         System.out.println("Изначальная матрица: ");
         PrettyMatrixOutput.printMatrix(matrix);
         GaussMethod.compute(matrix);
-        double[][] data = new double[matrix.getSize()][matrix.getSize()];
-        double[] vectorData = new double[matrix.getSize()];
-        for (int i = 0; i < matrix.getSize(); i++) {
-            for (int j = 0; j < matrix.getSize(); j++) {
-                data[i][j] = matrix.getData()[i][j];
-            }
-            vectorData[i] = matrix.getData()[i][matrix.getSize()];
-        }
-        RealMatrix realMatrix = MatrixUtils.createRealMatrix(data);
-
-        LUDecomposition luDecomposition = new LUDecomposition(realMatrix);
-
+        MathLibrary mathLibrary = new MathLibrary(matrix);
         System.out.println("Определитель через библиотеку:");
-        System.out.println(luDecomposition.getDeterminant());
+        System.out.println(mathLibrary.getDeterminant());
         System.out.println("Решение через библиотеку:");
-        RealVector vector = new ArrayRealVector(vectorData);
-        RealVector solution = luDecomposition.getSolver().solve(vector);
-        System.out.println(solution);
-
+        System.out.println(Arrays.toString(mathLibrary.getSolution()));
     }
 
     private Matrix generateRandomMatrix() throws IncorrectInputException, IOException {
         System.out.println("Введите размерность матрицы:");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-
 
         int size = Integer.parseInt(reader.readLine().strip());
         if (size > 20 || size < 1) {
