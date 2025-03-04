@@ -13,4 +13,4 @@ public enum AmountOfSolution {
     public String getName() {
         return name;
     }
-    }
+}

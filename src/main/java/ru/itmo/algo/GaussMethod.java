@@ -85,10 +85,6 @@ public class GaussMethod {
     }
 
     private static AmountOfSolution findAmountOfSolution(Matrix matrix1, Matrix matrix2) {
-        if (matrix1.getSize() != matrix2.getSize()) {
-            return null;
-        }
-
         if (findRang(matrix1) != findRang(matrix2)) {
             return AmountOfSolution.ZERO;
         }
