@@ -46,11 +46,7 @@ public class ConsoleCommand implements Command {
             System.out.println(e.getMessage());
             return;
         }
-        MathLibrary mathLibrary = new MathLibrary(matrix);
-        System.out.println("Определитель через библиотеку:");
-        System.out.println(mathLibrary.getDeterminant());
-        System.out.println("Решение через библиотеку:");
-        System.out.println(Arrays.toString(mathLibrary.getSolution()));
+        printDeterminantAndSolution(matrix);
     }
 
     private Matrix readFromConsole() throws IOException, IncorrectInputException, NumberFormatException, ArrayIndexOutOfBoundsException {
@@ -77,5 +73,21 @@ public class ConsoleCommand implements Command {
         }
         reader.close();
         return new Matrix(size, matrix);
+    }
+
+    private void printDeterminantAndSolution(Matrix matrix) {
+        MathLibrary mathLibrary = new MathLibrary(matrix);
+        try {
+            System.out.println("Определитель через библиотеку:");
+            System.out.println(mathLibrary.getDeterminant());
+        } catch (Exception e) {
+            System.out.println("Сторонней библиотеке не удалось найти определитель");
+        }
+        try {
+            System.out.println("Решение через библиотеку:");
+            System.out.println(Arrays.toString(mathLibrary.getSolution()));
+        } catch (Exception e) {
+            System.out.println("Сторонней библиотеке не удалось найти решение СЛАУ");
+        }
     }
 }
