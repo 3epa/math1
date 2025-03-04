@@ -1,9 +1,11 @@
 package ru.itmo.command;
 
 import ru.itmo.algo.GaussMethod;
+import ru.itmo.algo.MathLibrary;
 import ru.itmo.exception.IncorrectInputException;
 import ru.itmo.model.Matrix;
 import ru.itmo.util.PrettyMatrixOutput;
+import org.apache.commons.math3.linear.*;
 
 import java.io.*;
 
@@ -42,6 +44,24 @@ public class FileCommand implements Command {
         System.out.println("Изначальная матрица: ");
         PrettyMatrixOutput.printMatrix(matrix);
         GaussMethod.compute(matrix);
+        double[][] data = new double[matrix.getSize()][matrix.getSize()];
+        double[] vectorData = new double[matrix.getSize()];
+        for (int i = 0; i < matrix.getSize(); i++) {
+            for (int j = 0; j < matrix.getSize(); j++) {
+                data[i][j] = matrix.getData()[i][j];
+            }
+            vectorData[i] = matrix.getData()[i][matrix.getSize()];
+        }
+        RealMatrix realMatrix = MatrixUtils.createRealMatrix(data);
+
+        LUDecomposition luDecomposition = new LUDecomposition(realMatrix);
+
+        System.out.println("Определитель через библиотеку:");
+        System.out.println(luDecomposition.getDeterminant());
+        System.out.println("Решение через библиотеку:");
+        RealVector vector = new ArrayRealVector(vectorData);
+        RealVector solution = luDecomposition.getSolver().solve(vector);
+        System.out.println(solution);
     }
 
     private Matrix readFromFile(String fileName) throws IOException, IncorrectInputException {

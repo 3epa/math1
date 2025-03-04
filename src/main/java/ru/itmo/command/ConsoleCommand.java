@@ -1,9 +1,11 @@
 package ru.itmo.command;
 
 import ru.itmo.algo.GaussMethod;
+import ru.itmo.algo.MathLibrary;
 import ru.itmo.exception.IncorrectInputException;
 import ru.itmo.model.Matrix;
 import ru.itmo.util.PrettyMatrixOutput;
+import org.apache.commons.math3.linear.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,7 +38,26 @@ public class ConsoleCommand implements Command {
         }
         System.out.println("Изначальная матрица: ");
         PrettyMatrixOutput.printMatrix(matrix);
+        System.out.println("Мой метод Гаусса:");
         GaussMethod.compute(matrix);
+        double[][] data = new double[matrix.getSize()][matrix.getSize()];
+        double[] vectorData = new double[matrix.getSize()];
+        for (int i = 0; i < matrix.getSize(); i++) {
+            for (int j = 0; j < matrix.getSize(); j++) {
+                data[i][j] = matrix.getData()[i][j];
+            }
+            vectorData[i] = matrix.getData()[i][matrix.getSize()];
+        }
+        RealMatrix realMatrix = MatrixUtils.createRealMatrix(data);
+
+        LUDecomposition luDecomposition = new LUDecomposition(realMatrix);
+
+        System.out.println("Определитель через библиотеку:");
+        System.out.println(luDecomposition.getDeterminant());
+        System.out.println("Решение через библиотеку:");
+        RealVector vector = new ArrayRealVector(vectorData);
+        RealVector solution = luDecomposition.getSolver().solve(vector);
+        System.out.println(solution);
     }
 
     private Matrix readFromConsole() throws IOException, IncorrectInputException, NumberFormatException, ArrayIndexOutOfBoundsException {
@@ -48,16 +69,16 @@ public class ConsoleCommand implements Command {
             throw new IncorrectInputException("Variable size not in required range(1 <= size <= 20)");
         }
         System.out.println("Введите строки матрицы:");
-        String[][] stringMatrix = new String[size][size+1];
+        String[][] stringMatrix = new String[size][size + 1];
         for (int i = 0; i < size; i++) {
             String matrixLine = reader.readLine().strip();
             matrixLine = matrixLine.replaceAll(",", ".");
             stringMatrix[i] = matrixLine.split(" ");
         }
 
-        double[][] matrix = new double[size][size+1];
+        double[][] matrix = new double[size][size + 1];
         for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size+1; j++) {
+            for (int j = 0; j < size + 1; j++) {
                 matrix[i][j] = Double.parseDouble(stringMatrix[i][j].strip());
             }
         }
