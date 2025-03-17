@@ -22,14 +22,13 @@ public class RandomCommand implements Command {
         try {
             matrix = generateRandomMatrix();
         } catch (IOException e) {
-            System.out.println("Внутренняя ошибка, попробуйте перезапустить приложение или проверить данные файла");
+            PrettyPrinter.printError("Внутренняя ошибка, попробуйте перезапустить приложение или проверить данные файла");
             return;
         } catch (IncorrectInputException e) {
-            System.out.println("Данные не соответствуют требуемым ограничениям");
-            System.out.println(e.getMessage());
+            PrettyPrinter.printError("Данные не соответствуют требуемым ограничениям\n"+e.getMessage());
             return;
         } catch (NumberFormatException e) {
-            System.out.println("Одно из введенных значений не является числом");
+            PrettyPrinter.printError("Одно из введенных значений не является числом");
             return;
         }
         MatrixProcessor.processMatrix(matrix);

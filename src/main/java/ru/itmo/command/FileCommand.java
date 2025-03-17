@@ -20,26 +20,25 @@ public class FileCommand implements Command {
     public void execute() {
         Matrix matrix;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
-            System.out.println("Введите имя файла: ");
+            PrettyPrinter.printMainHeader("Введите имя файла:");
             String fileName = reader.readLine().strip();
 
-            System.out.println("Чтение данных с файла...");
+            PrettyPrinter.printMainHeader("Чтение данных с файла...");
             matrix = readFromFile(fileName);
         } catch (FileNotFoundException e) {
-            System.out.println("Указанный файл не существует");
+            PrettyPrinter.printError("Указанный файл не существует");
             return;
         } catch (IOException e) {
-            System.out.println("Внутренняя ошибка, попробуйте перезапустить приложение или проверить данные файла");
+            PrettyPrinter.printError("Внутренняя ошибка, попробуйте перезапустить приложение или проверить данные файла");
             return;
         } catch (IncorrectInputException e) {
-            System.out.println("Данные не соответствуют требуемым ограничениям");
-            System.out.println(e.getMessage());
+            PrettyPrinter.printError("Данные не соответствуют требуемым ограничениям\n"+e.getMessage());
             return;
         } catch (NumberFormatException e) {
-            System.out.println("Одно из введенных значений не является числом");
+            PrettyPrinter.printError("Одно из введенных значений не является числом");
             return;
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Некорректное количество введенных данных");
+            PrettyPrinter.printError("Некорректное количество введенных данных");
             return;
         }
         MatrixProcessor.processMatrix(matrix);
