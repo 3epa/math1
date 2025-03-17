@@ -50,6 +50,8 @@ public class GaussMethod {
                 }
             }
         }
+        matrix.setTriangle(true);
+        return matrix;
     }
 
     private static double[] findSolution(Matrix matrix) {
@@ -67,7 +69,10 @@ public class GaussMethod {
         return solution;
     }
 
-    private static double findDeterminant(Matrix matrix) {
+    public double findDeterminant(Matrix matrix) throws MatrixIsNotTriangleException {
+        if (!matrix.isTriangle()) {
+            throw new MatrixIsNotTriangleException("Матрица не приведена к треугольному виду, невозможно найти определитель");
+        }
         double determinant = 1;
         for (int i = 0; i < matrix.getSize(); i++) {
             determinant = determinant * matrix.getData()[i][i];
@@ -75,7 +80,10 @@ public class GaussMethod {
         return determinant * matrix.getDetSign();
     }
 
-    private static int findRang(Matrix matrix, boolean isBColumn) {
+    public int findRang(Matrix matrix, boolean isBColumn) throws MatrixIsNotTriangleException {
+        if (!matrix.isTriangle()) {
+            throw new MatrixIsNotTriangleException("Матрица не приведена к треугольному виду, невозможно найти определитель");
+        }
         int counter = 0;
         for (int i = 0; i < matrix.getSize(); i++) {
             boolean flag = true;
