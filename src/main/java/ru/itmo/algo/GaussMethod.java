@@ -1,36 +1,10 @@
 package ru.itmo.algo;
 
-import ru.itmo.exception.NoSolutionExistsException;
+import ru.itmo.exception.MatrixIsNotTriangleException;
 import ru.itmo.model.Matrix;
-import ru.itmo.util.PrettyMatrixOutput;
 
 public class GaussMethod {
-    public static void compute(Matrix matrix) throws NoSolutionExistsException {
-        Matrix originalMatrix = new Matrix(matrix.getSize(), matrix.getData());
-        matrixTriangulation(matrix);
-        System.out.println("Матрица, приведенная к треугольному виду:");
-        PrettyMatrixOutput.printMatrix(matrix);
-        AmountOfSolution amountOfSolution = findAmountOfSolution(matrix);
-        if (amountOfSolution != AmountOfSolution.ONE) {
-            throw new NoSolutionExistsException("Система имеет не ровно одно решение, а " + amountOfSolution);
-        }
-        System.out.println("Определитель матрицы:");
-        System.out.println(findDeterminant(matrix));
-        double[] solution = findSolution(matrix);
-        for (int i = 0; i < matrix.getSize(); i++)  {
-            System.out.println("x_" + (i + 1) + "=" + solution[i]);
-        }
-        System.out.println("Вектор невязки:");
-        double[] residuals = findResiduals(originalMatrix, solution);
-        for (int i = 0; i < matrix.getSize(); i++) {
-            System.out.println("r_" + (i + 1) + "=" + residuals[i]);
-        }
-        if (!isSolutionCorrect(residuals)) {
-            System.out.println("Не удалось достигнуть требуемой точности вычислений");
-        }
-    }
-
-    private static void matrixTriangulation(Matrix matrix) {
+    public Matrix matrixTriangulation(Matrix matrix) {
         double[][] data = matrix.getData();
         int size = matrix.getSize();
         for (int i = 0; i < size - 1; i++) {
@@ -54,7 +28,7 @@ public class GaussMethod {
         return matrix;
     }
 
-    private static double[] findSolution(Matrix matrix) {
+    public double[] findSolution(Matrix matrix) {
         int size = matrix.getSize();
         double[][] data = matrix.getData();
         double[] solution = new double[size];
@@ -107,7 +81,7 @@ public class GaussMethod {
         return matrix.getSize() - counter;
     }
 
-    private static AmountOfSolution findAmountOfSolution(Matrix matrix) {
+    public AmountOfSolution findAmountOfSolution(Matrix matrix) throws MatrixIsNotTriangleException {
         int rang1 = findRang(matrix, true);
         int rang2 = findRang(matrix, false);
         if (rang1 != rang2) {
@@ -120,7 +94,7 @@ public class GaussMethod {
 
         return AmountOfSolution.ONE;
     }
-    private static double[] findResiduals(Matrix matrix, double[] x) {
+    public double[] findResiduals(Matrix matrix, double[] x) {
         double[] residuals = new double[matrix.getSize()];
         for (int i = 0; i < matrix.getSize(); i++) {
             double s = 0;
@@ -132,7 +106,7 @@ public class GaussMethod {
         return residuals;
     }
 
-    private static boolean isSolutionCorrect(double[] r) {
+    public boolean isSolutionCorrect(double[] r) {
         double s = 0;
         double eps = 0.0001;
         for (double v : r) {

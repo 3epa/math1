@@ -1,16 +1,17 @@
 package ru.itmo.command;
 
+import ru.itmo.algo.AmountOfSolution;
 import ru.itmo.algo.GaussMethod;
 import ru.itmo.algo.MathLibrary;
 import ru.itmo.exception.IncorrectInputException;
-import ru.itmo.exception.NoSolutionExistsException;
+import ru.itmo.exception.MatrixIsNotTriangleException;
 import ru.itmo.model.Matrix;
 import ru.itmo.util.PrettyPrinter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
+
 
 public class ConsoleCommand implements Command {
     @Override
@@ -36,16 +37,65 @@ public class ConsoleCommand implements Command {
             PrettyPrinter.printError("Некорректное количество введенных данных");
             return;
         }
-        System.out.println("Изначальная матрица: ");
-        PrettyMatrixOutput.printMatrix(matrix);
-        System.out.println("Мой метод Гаусса:");
+        PrettyPrinter.printHeader("Изначальная матрица:");
+        PrettyPrinter.printMatrix(matrix);
+
+        PrettyPrinter.printMainHeader("Мой метод Гаусса:");
+        GaussMethod gaussMethod = new GaussMethod();
+
+        // Приводим матрицу к треугольному виду
+        PrettyPrinter.printHeader("Матрица, приведенная к треугольному виду:");
+        Matrix triangularMatrix = gaussMethod.matrixTriangulation(matrix);
+        PrettyPrinter.printMatrix(matrix);
+
+        // Ищем количество решений
         try {
-            GaussMethod.compute(matrix);
-        } catch (NoSolutionExistsException e) {
-            System.out.println(e.getMessage());
+            AmountOfSolution amountOfSolution = gaussMethod.findAmountOfSolution(triangularMatrix);
+            if (amountOfSolution != AmountOfSolution.ONE) {
+                PrettyPrinter.printError("Система имеет не ровно одно решение, а " + amountOfSolution);
+                return;
+            }
+        } catch (MatrixIsNotTriangleException e) {
+            PrettyPrinter.printError(e.getMessage());
             return;
         }
-        printDeterminantAndSolution(matrix);
+
+        // Ищем определитель
+        double determinant;
+        try {
+            determinant = gaussMethod.findDeterminant(triangularMatrix);
+        } catch (MatrixIsNotTriangleException e) {
+            PrettyPrinter.printError(e.getMessage());
+            return;
+        }
+        PrettyPrinter.printDeterminant(determinant);
+
+        // Ищем решение системы
+        double[] solution = gaussMethod.findSolution(triangularMatrix);
+        PrettyPrinter.printSolution(solution);
+
+        // Считаем погрешность вычислений
+        double[] residuals = gaussMethod.findResiduals(matrix, solution);
+        PrettyPrinter.printResiduals(residuals);
+
+        if (!gaussMethod.isSolutionCorrect(residuals)) {
+            PrettyPrinter.printError("Не удалось достигнуть требуемой точности вычислений");
+        }
+        PrettyPrinter.printMainHeader("Использование библиотеки:");
+        MathLibrary mathLibrary = new MathLibrary(matrix);
+        try {
+            double libraryDeterminant = mathLibrary.getDeterminant();
+            PrettyPrinter.printDeterminant(libraryDeterminant);
+        } catch (Exception e) {
+            PrettyPrinter.printError("Сторонней библиотеке не удалось найти определитель");
+        }
+        try {
+            double[] librarySolution = mathLibrary.getSolution();
+            PrettyPrinter.printSolution(librarySolution);
+        } catch (Exception e) {
+            PrettyPrinter.printError("Сторонней библиотеке не удалось найти решение СЛАУ");
+        }
+
     }
 
     private Matrix readFromConsole() throws IOException, IncorrectInputException, NumberFormatException, ArrayIndexOutOfBoundsException {
@@ -73,21 +123,5 @@ public class ConsoleCommand implements Command {
         }
         reader.close();
         return new Matrix(size, matrix);
-    }
-
-    private void printDeterminantAndSolution(Matrix matrix) {
-        MathLibrary mathLibrary = new MathLibrary(matrix);
-        try {
-            System.out.println("Определитель через библиотеку:");
-            System.out.println(mathLibrary.getDeterminant());
-        } catch (Exception e) {
-            System.out.println("Сторонней библиотеке не удалось найти определитель");
-        }
-        try {
-            System.out.println("Решение через библиотеку:");
-            System.out.println(Arrays.toString(mathLibrary.getSolution()));
-        } catch (Exception e) {
-            System.out.println("Сторонней библиотеке не удалось найти решение СЛАУ");
-        }
     }
 }
