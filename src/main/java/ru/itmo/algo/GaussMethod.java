@@ -44,7 +44,7 @@ public class GaussMethod {
     }
 
     public double findDeterminant(Matrix matrix) throws MatrixIsNotTriangleException {
-        if (!matrix.isNotTriangle()) {
+        if (matrix.isNotTriangle()) {
             throw new MatrixIsNotTriangleException("Матрица не приведена к треугольному виду, невозможно найти определитель");
         }
         double determinant = 1;
