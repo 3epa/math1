@@ -5,6 +5,7 @@ import ru.itmo.command.FileCommand;
 import ru.itmo.command.RandomCommand;
 import ru.itmo.exception.CommandNotExistsException;
 import ru.itmo.manager.CommandManager;
+import ru.itmo.util.PrettyPrinter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,13 +18,13 @@ public class Main {
         commandManager.addCommand(new ConsoleCommand());
         commandManager.addCommand(new FileCommand());
         commandManager.addCommand(new RandomCommand());
-        System.out.println("Выберите режим, с помощью которого вы хотите вводить матрицу(console, file, random): ");
+        PrettyPrinter.printMainHeader("Выберите режим, с помощью которого вы хотите вводить матрицу(console, file, random):");
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
             commandManager.execute(reader.readLine().strip());
         } catch (IOException e) {
-            System.out.println("Внутренняя ошибка, попробуйте запустить приложение ещё раз");
+            PrettyPrinter.printError("Внутренняя ошибка, попробуйте запустить приложение ещё раз");
         } catch (CommandNotExistsException e) {
-            System.out.println("Введённой команды не существует");
+            PrettyPrinter.printError("Введённой команды не существует");
         }
     }
 }

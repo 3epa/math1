@@ -4,6 +4,7 @@ public class Matrix {
     private final int size;
     private final double[][] data;
     private int detSign = 1;
+    private boolean isTriangle = false;
 
     public Matrix(int size, double[][] data) {
         this.size = size;
@@ -30,5 +31,13 @@ public class Matrix {
         double[] temp = this.data[firstRow];
         this.data[firstRow] = this.data[secondRow];
         this.data[secondRow] = temp;
+    }
+
+    public boolean isTriangle() {
+        return isTriangle;
+    }
+
+    public void setTriangle(boolean triangle) {
+        isTriangle = triangle;
     }
 }

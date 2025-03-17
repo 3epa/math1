@@ -5,7 +5,7 @@ import ru.itmo.algo.MathLibrary;
 import ru.itmo.exception.IncorrectInputException;
 import ru.itmo.exception.NoSolutionExistsException;
 import ru.itmo.model.Matrix;
-import ru.itmo.util.PrettyMatrixOutput;
+import ru.itmo.util.PrettyPrinter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,17 +24,16 @@ public class ConsoleCommand implements Command {
         try {
             matrix = readFromConsole();
         } catch (IOException e) {
-            System.out.println("Внутренняя ошибка, попробуйте перезапустить приложение");
+            PrettyPrinter.printError("Внутренняя ошибка, попробуйте перезапустить приложение");
             return;
         } catch (IncorrectInputException e) {
-            System.out.println("Данные не соответствуют требуемым ограничениям");
-            System.out.println(e.getMessage());
+            PrettyPrinter.printError("Данные не соответствуют требуемым ограничениям\n" + e.getMessage());
             return;
         } catch (NumberFormatException e) {
-            System.out.println("Одно из введенных значений не является числом");
+            PrettyPrinter.printError("Одно из введенных значений не является числом");
             return;
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Некорректное количество введенных данных");
+            PrettyPrinter.printError("Некорректное количество введенных данных");
             return;
         }
         System.out.println("Изначальная матрица: ");
@@ -50,14 +49,15 @@ public class ConsoleCommand implements Command {
     }
 
     private Matrix readFromConsole() throws IOException, IncorrectInputException, NumberFormatException, ArrayIndexOutOfBoundsException {
-        System.out.println("Введите размерность матрицы:");
+        PrettyPrinter.printMainHeader("Введите размерность матрицы:");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         int size = Integer.parseInt(reader.readLine().strip());
         if (size > 20 || size < 1) {
-            throw new IncorrectInputException("Variable size not in required range(1 <= size <= 20)");
+            throw new IncorrectInputException("Размер не находится в требуемоемом диапазоне( {1, ..., 20})");
         }
-        System.out.println("Введите строки матрицы:");
+
+        PrettyPrinter.printMainHeader("Введите строки матрицы:");
         String[][] stringMatrix = new String[size][size + 1];
         for (int i = 0; i < size; i++) {
             String matrixLine = reader.readLine().strip();
