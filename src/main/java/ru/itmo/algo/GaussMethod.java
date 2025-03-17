@@ -44,7 +44,7 @@ public class GaussMethod {
     }
 
     public double findDeterminant(Matrix matrix) throws MatrixIsNotTriangleException {
-        if (!matrix.isTriangle()) {
+        if (!matrix.isNotTriangle()) {
             throw new MatrixIsNotTriangleException("Матрица не приведена к треугольному виду, невозможно найти определитель");
         }
         double determinant = 1;
@@ -55,7 +55,7 @@ public class GaussMethod {
     }
 
     public int findRang(Matrix matrix, boolean isBColumn) throws MatrixIsNotTriangleException {
-        if (!matrix.isTriangle()) {
+        if (matrix.isNotTriangle()) {
             throw new MatrixIsNotTriangleException("Матрица не приведена к треугольному виду, невозможно найти определитель");
         }
         int counter = 0;

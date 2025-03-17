@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class MatrixReader {
 
-    public static Matrix readMatrix(BufferedReader reader, int size) throws IOException, IncorrectInputException {
+    public static Matrix readMatrix(BufferedReader reader, int size) throws IOException {
         String[][] stringMatrix = new String[size][size + 1];
         for (int i = 0; i < size; i++) {
             String matrixLine = reader.readLine().strip();

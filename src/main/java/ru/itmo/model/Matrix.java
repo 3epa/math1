@@ -33,8 +33,8 @@ public class Matrix {
         this.data[secondRow] = temp;
     }
 
-    public boolean isTriangle() {
-        return isTriangle;
+    public boolean isNotTriangle() {
+        return !isTriangle;
     }
 
     public void setTriangle(boolean triangle) {
