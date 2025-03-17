@@ -9,8 +9,9 @@ import ru.itmo.model.Matrix;
 public class MatrixProcessor {
 
     public static void processMatrix(Matrix matrix) {
+        Matrix matrixCopy = matrix.copy();
         processMatrixWithCustom(matrix);
-        processMatrixWithLibrary(matrix);
+        processMatrixWithLibrary(matrixCopy);
     }
 
     public static void processMatrixWithLibrary(Matrix matrix) {

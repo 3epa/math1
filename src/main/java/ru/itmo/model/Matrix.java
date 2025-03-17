@@ -11,6 +11,14 @@ public class Matrix {
         this.data = data;
     }
 
+    public Matrix copy() {
+        double[][] copiedData = new double[size][size + 1];
+        for (int i = 0; i < size; i++) {
+            System.arraycopy(data[i], 0, copiedData[i], 0, size + 1);
+        }
+        return new Matrix(size, copiedData);
+    }
+
     public int getDetSign() {
         return detSign;
     }
