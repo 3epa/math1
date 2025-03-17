@@ -1,11 +1,11 @@
 package ru.itmo.command;
 
-import ru.itmo.algo.GaussMethod;
 import ru.itmo.algo.MathLibrary;
 import ru.itmo.exception.IncorrectInputException;
-import ru.itmo.exception.NoSolutionExistsException;
 import ru.itmo.model.Matrix;
-import ru.itmo.util.PrettyMatrixOutput;
+import ru.itmo.util.MatrixProcessor;
+import ru.itmo.util.MatrixReader;
+import ru.itmo.util.PrettyPrinter;
 
 import java.io.*;
 import java.util.Arrays;
@@ -42,53 +42,14 @@ public class FileCommand implements Command {
             System.out.println("Некорректное количество введенных данных");
             return;
         }
-        System.out.println("Изначальная матрица: ");
-        PrettyMatrixOutput.printMatrix(matrix);
-        try {
-            GaussMethod.compute(matrix);
-        } catch (NoSolutionExistsException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
-        printDeterminantAndSolution(matrix);
+        MatrixProcessor.processMatrix(matrix);
     }
 
     private Matrix readFromFile(String fileName) throws IOException, IncorrectInputException {
         BufferedReader reader = new BufferedReader(new FileReader(fileName));
 
-        int size = Integer.parseInt(reader.readLine().strip());
-        if (size > 20 || size < 1) {
-            throw new IncorrectInputException("Variable size not in required range(1 <= size <= 20)");
-        }
-        String[][] stringMatrix = new String[size][size + 1];
-        for (int i = 0; i < size; i++) {
-            String matrixLine = reader.readLine().strip();
-            matrixLine = matrixLine.replaceAll(",", ".");
-            stringMatrix[i] = matrixLine.split(" ");
-        }
+        int size = MatrixReader.readSize(reader);
 
-        double[][] matrix = new double[size][size + 1];
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size + 1; j++) {
-                matrix[i][j] = Double.parseDouble(stringMatrix[i][j].strip());
-            }
-        }
-        reader.close();
-        return new Matrix(size, matrix);
-    }
-    private void printDeterminantAndSolution(Matrix matrix) {
-        MathLibrary mathLibrary = new MathLibrary(matrix);
-        try {
-            System.out.println("Определитель через библиотеку:");
-            System.out.println(mathLibrary.getDeterminant());
-        } catch (Exception e) {
-            System.out.println("Сторонней библиотеке не удалось найти определитель");
-        }
-        try {
-            System.out.println("Решение через библиотеку:");
-            System.out.println(Arrays.toString(mathLibrary.getSolution()));
-        } catch (Exception e) {
-            System.out.println("Сторонней библиотеке не удалось найти решение СЛАУ");
-        }
+        return MatrixReader.readMatrix(reader, size);
     }
 }
